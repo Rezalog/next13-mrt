@@ -104,7 +104,7 @@ export default function Home() {
   return (
     <div>
 
-      <ComposedChart width={730} height={250} data={data}>
+      <ComposedChart width={730} height={250} data={chartData}>
         <XAxis dataKey="name" />
         <YAxis />
         <Tooltip />
@@ -115,7 +115,7 @@ export default function Home() {
         <Line type="monotone" dataKey="uv" stroke="#ff7300" />
       </ComposedChart>
 
-      
+
       {/* <LineChart width={600} height={300} data={chartData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
         <Line type="natural" dataKey="uv" stroke="#8884d8" />
         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
