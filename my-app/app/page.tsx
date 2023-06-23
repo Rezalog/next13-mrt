@@ -3,7 +3,30 @@
 import { MRT_ColumnDef, MaterialReactTable } from 'material-react-table'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useMemo } from 'react'
+import { Fragment, useMemo } from 'react'
+import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
+
+export function chart() {
+
+    const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}];
+
+    const renderLineChart = (
+      <LineChart width={600} height={300} data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+        <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+        <XAxis dataKey="name" />
+        <YAxis />
+      </LineChart>
+    );
+
+    return (
+
+        <div>
+            { renderLineChart }
+        </div>
+    )
+    
+}
 
 
 interface Person {
@@ -88,11 +111,20 @@ export default function Home() {
   );
 
   return (
-    <MaterialReactTable
-      columns={columns}
-      data={data}
-      enableRowSelection
-      enableColumnOrdering
-      enableGlobalFilter={false}/>
+    <div>
+      <div className='chart'>
+        chart
+      </div>
+
+      <div className='grid'>
+        <MaterialReactTable
+          columns={columns}
+          data={data}
+          enableRowSelection
+          enableColumnOrdering
+          enableGlobalFilter={false}/>
+      </div>
+
+    </div>
   )
 }
