@@ -3,7 +3,7 @@
 import { MRT_ColumnDef, MaterialReactTable } from 'material-react-table'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Fragment, useMemo } from 'react'
+import { DOMAttributes, Fragment, KeyboardEventHandler, useMemo, useRef, useState } from 'react'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, BarChart, Tooltip, Legend, Bar, ComposedChart, Area, PieChart, Pie } from 'recharts';
 import * as echarts from 'echarts/core';
 import {
@@ -77,6 +77,9 @@ import { SVGRenderer } from 'echarts/renderers';
 
 export default function Home() {
 
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [text, setText] = useState<string[]>([]);
+
   // grid
   // const columns = useMemo<MRT_ColumnDef<Person>[]>( 
   //   () => [
@@ -117,31 +120,57 @@ export default function Home() {
 
 
   // echart
-  type EchartsOption = echarts.ComposeOption<
-  | TooltipComponentOption
-  | GridComponentOption
-  | VisualMapComponentOption
-  | HeatmapSeriesOption
->;
+//   type EchartsOption = echarts.ComposeOption<
+//   | TooltipComponentOption
+//   | GridComponentOption
+//   | VisualMapComponentOption
+//   | HeatmapSeriesOption
+// >;
 
   // const chartDom = document.getElementById('main');
   // const myChart = echarts.init(chartDom, null, {
   //   renderer: 'svg'
   // });
   // const option: EchartsOption;
-  const d = document;
-  const rootNode = d.getRootNode
-  const rootDom = d.getElementsByClassName("root");
-  
+
+  const handleClick = () => {
+
+      console.log(text);
+
+      if(text===null && inputRef.current !==null) {
+        setText([inputRef.current.value])
+      }
+
+      if(inputRef.current) {
+        setText([...text, inputRef.current.value]);
+      } 
+      
+  }
+
+  const handleEnterKeyDown = (e: KeyboardEvent) => {
+
+    if(e.key==='Enter') {
+      console.log(e);
+
+      handleClick();
+    }
+    
+  }
 
   return (
-    <div>
+    <>
 
-       {rootDom ? `rootDom: ${rootDom}` : "존재 X"}
-       {rootNode ? `rootNode: ${rootNode}` : "존재 X"}
+      <input ref={inputRef} onKeyDown={handleEnterKeyDown}/>
+      <button onClick={handleClick} >click</button>
 
-
-
+      <div className='renderList'>
+        <ul>
+        { text.map((item) => {
+          
+          return <li key={text.length}>{item}</li>
+        })}
+        </ul>
+      </div>
       {/* 
       <ComposedChart width={730} height={250} data={chartData}>
         <XAxis dataKey="name" />
@@ -161,6 +190,6 @@ export default function Home() {
         enableRowSelection
         enableColumnOrdering
         enableGlobalFilter={false}/> */}
-    </div>
+    </>
   )
 }
